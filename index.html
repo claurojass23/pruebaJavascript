@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba Javascript</title>
+</head>
+<body>
+  <main>
+      <div>
+         <h2>Contactos</h2>
+      </div>
+     <div>
+         <h3>AGREGAR NUEVO CONTACTO</h3>
+         <form id="form-agregar">
+              <input type="text" id="nombre" placeholder="Nombre" required>
+              <input type="text" id="entidad" placeholder="Entidad" required>
+              <input type="email" id="email" placeholder="Email" required>
+              <button type="submit">AGREGAR</button>
+         </form>
+     </div>
+  </main>
+
+  <section>
+       <div>
+         <h3>Filtrar por:</h3>
+       </div>
+      <div>
+          <input type="text" id="busqueda" placeholder="Buscar...">
+          <button id="btn-buscar">BUSCAR</button>
+      </div>
+  </section>
+
+  <table id="tabla-usuarios">
+      <thead>
+          <tr>
+              <th>Nombre</th>
+              <th>Entidad</th>
+              <th>Email</th>
+              <th>Acciones</th>
+           </tr>
+      </thead>
+      <tbody id="cuerpo-tabla">
+      </tbody>
+  </table>
+
+  <script src="app.js"></script>
+</body>
+</html>
