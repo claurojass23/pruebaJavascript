@@ -104,7 +104,7 @@ function editar(index, boton) {
 
 // funcion para eliminar
 function eliminar(index) {
-  
+  // Eliminar el usuario directamente
   usuarios.splice(index, 1);
 
   
@@ -114,9 +114,81 @@ function eliminar(index) {
   crearTabla();
 }
 
-//funcion para buscar
+//sugerencias
 
+const inputBusqueda = document.getElementById("busqueda");
+const listaSugerencias = document.getElementById("sugerencias");
+
+inputBusqueda.addEventListener("input", () => {
+  const texto = inputBusqueda.value.toLowerCase();
+  listaSugerencias.innerHTML = "";
+
+  if (texto === "") {
+    listaSugerencias.style.display = "none";
+    crearTabla(); 
+    return;
+  }
+
+
+  const coincidencias = usuarios.filter(usuario => {
+    return (
+      usuario.nombre.toLowerCase().includes(texto) ||
+      usuario.Entidad.toLowerCase().includes(texto) ||
+      usuario.Email.toLowerCase().includes(texto)
+    );
+  });
+
+  if (coincidencias.length > 0) {
+    listaSugerencias.style.display = "block";
+
+    coincidencias.forEach(usuario => {
+      const item = document.createElement("li");
+      item.textContent = `${usuario.nombre} - ${usuario.Entidad} - ${usuario.Email}` ;
+      item.style.padding = "5px";
+      item.style.cursor = "pointer";
+
+      item.addEventListener("click", () => {
+        inputBusqueda.value = usuario.nombre;
+        listaSugerencias.style.display = "none";
+        buscar();
+      });
+
+      listaSugerencias.appendChild(item);
+    });
+  } else {
+    listaSugerencias.style.display = "none";
+  }
+
+  buscar(); 
+});
+
+
+// funcion buscar
 function buscar(){
+    const texto = document.getElementById("busqueda").value.toLowerCase();
+    const tbody = document.getElementById("cuerpo-tabla");
+     tbody.innerHTML = ""; 
+
+  usuarios.forEach((usuario, index) => {
+    const nombre = usuario.nombre.toLowerCase();
+    const entidad = usuario.Entidad.toLowerCase();
+    const email = usuario.Email.toLowerCase();
+
+    
+    if (nombre.includes(texto) || entidad.includes(texto) || email.includes(texto)) {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td><input type="text" value="${usuario.nombre}" disabled></td>
+        <td><input type="text" value="${usuario.Entidad}" disabled></td>
+        <td><input type="text" value="${usuario.Email}" disabled></td>
+        <td>
+          <button onclick="editar(${index}, this)">Editar</button>
+          <button onclick="eliminarUsuario(${index})">Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(fila);
+    }
+  });
 
 }
 
