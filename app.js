@@ -18,21 +18,25 @@ if (datosGuardados) {
     .catch(error => console.error('Error al cargar el JSON:', error));
 }
 
+
+
 function crearTabla() {
   const tbody = document.getElementById("cuerpo-tabla");
   tbody.innerHTML = "";
 
   usuarios.forEach((usuario, index) => {
     const fila = document.createElement("tr");
+
     fila.innerHTML = `
-      <td>${usuario.nombre}</td>
-      <td>${usuario.Entidad}</td>
-      <td>${usuario.Email}</td>
+      <td><input type="text" value="${usuario.nombre}" disabled></td>
+      <td><input type="text" value="${usuario.Entidad}" disabled></td>
+      <td><input type="text" value="${usuario.Email}" disabled></td>
       <td>
-        <button onclick="editarUsuario(${index})">Editar</button>
-        <button onclick="eliminarUsuario(${index})">Eliminar</button>
+        <button onclick="editar(${index}, this)">Editar</button>
+        <button onclick="eliminar(${index})">Eliminar</button>
       </td>
     `;
+
     tbody.appendChild(fila);
   });
 }
@@ -66,15 +70,53 @@ function agregar() {
   document.getElementById("form-agregar").reset();
 }
 
+// funcion para editar
 
-function editar(){
+function editar(index, boton) {
+  const fila = boton.parentNode.parentNode;
+  const inputs = fila.querySelectorAll("input");
 
+  if (boton.textContent === "Editar") {
+    inputs.forEach(input => input.disabled = false);
+    boton.textContent = "Guardar";
+  } else {
+    
+
+    const nombre = inputs[0].value.trim();
+    const entidad = inputs[1].value.trim();
+    const email = inputs[2].value.trim();
+
+    if (!nombre || !entidad || !email) {
+      alert("Todos los campos son obligatorios");
+      return;
+    }
+
+    usuarios[index] = {
+      nombre,
+      Entidad: entidad,
+      Email: email
+    };
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    crearTabla();
+  }
+};
+
+// funcion para eliminar
+function eliminar(index) {
+  
+  usuarios.splice(index, 1);
+
+  
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+  
+  crearTabla();
 }
 
-function eliminar(){
-
-}
+//funcion para buscar
 
 function buscar(){
 
 }
+
